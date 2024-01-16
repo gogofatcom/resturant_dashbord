@@ -1,0 +1,39 @@
+
+.bodydiv{
+  height: 100vh; 
+  overflow:hidden
+  
+}
+.topdiv{
+  height: 72vh;
+}
+.bottomdiv{
+  height: 18vh;
+ 
+  display: flex;
+  flex-direction: row;
+  background-color: #1F1D2B;
+}
+.split {
+  
+  height:100%;
+  }
+  
+  /* Control the left side */
+  .left {
+    overflow-x: scroll;
+    height: 72vh;
+     background-color:#1F1D2B;
+    box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    
+  }
+  
+  /* Control the right side */
+  .right {
+    overflow-y: scroll;
+    height: 72vh;
+   background: #1F1D2B;
+  
+    box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  
