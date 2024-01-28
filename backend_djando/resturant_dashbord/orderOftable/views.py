@@ -51,6 +51,33 @@ def Tables_detial(request,id):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@api_view(['GET'])
+def tableById(request,id):
+    item= Tablemodel.objects.get(id=id)
+    serializer=TableSerializer(item,context={'request': request})
+    return Response(serializer.data, status=status.HTTP_200_OK) 
+
+
+
+@api_view(['PUT'])
+def update_tablestuts(request):
+    data = request.data
+    item_ids = data.get('item_ids')
+    new_value = data.get('new_value')
+
+    try:
+        items = Tablemodel.objects.filter(id=item_ids)
+        items.update(status_Busy=new_value)
+        
+       
+
+        serializer = TableSerializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Tablemodel.DoesNotExist:
+        return Response({'error': 'One or more items not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
 
 
 

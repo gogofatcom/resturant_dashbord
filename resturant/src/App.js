@@ -15,6 +15,8 @@ import LoginPag from './pages/loginPage/LoginPag';
 import Itemsearch from './components/Itemsearch';
 import { MyContext } from './AppContext';
 import Catgreysearch from './components/Catgreysearch';
+import RegistionPage from './pages/loginPage/RegistionPage';
+
 
 
 function App() {
@@ -31,7 +33,10 @@ function App() {
 
      <Routes>
       
-     <Route path="/" element={<LoginPag />}/>
+    
+     
+     <Route path="/" element={<RegistionPage />}/>
+     <Route path="/login" element={<LoginPag />}/>
       <Route path="/home" element={<HomePage />} /> 
       <Route path="/order/:tableId" element={<OrderPagef />} />
       <Route path="/settings" element={<SettingPage />} /> 

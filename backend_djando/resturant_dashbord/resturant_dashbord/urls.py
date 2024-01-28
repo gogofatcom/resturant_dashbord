@@ -15,19 +15,36 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path ,include
 from catagyres.views import *
 from orderOftable.views import *
 from ordercart.views import*
-
+from userProfile.views import *
 from django.conf import  settings
 from django.conf.urls.static import static
 # from rest_framework_simplejwt import views as jwt_views
 
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+     
     
+   path("api/v1/auth/", include('djoser.urls')),
+    path("api/v1/auth/", include('djoser.urls.jwt')),
+
+    path('register/', RegistrationAPIView.as_view(), name='register'),
+    path('login/', LoginAPIView.as_view(), name='login'),
+    path('user/', UserProfileView.as_view(), name='user'),
+    
+    
+
    
 
     path('catagyres/', CatagresList),
@@ -40,7 +57,8 @@ urlpatterns = [
 
 
      path('tables/', TablesList),
-     path('iables/<int:id>/', Tables_detial), 
+     path('tables/<int:id>/', Tables_detial), 
+     path('tablestats/', update_tablestuts), 
 
    #order
   
@@ -56,20 +74,13 @@ urlpatterns = [
      path('deletorder/', delete_all_dataofcart, name='delete_order'),
      path('cart_items/', ListCartOfTable.as_view(),name='items_of_table'),
      path('cartstatus/', update_cartstuts, name='delete_order'),
+      path('update_quantities/', update_quantities, name='update_quantities'),
      path('cancelorder/', cancel_items, name='cancel_order'),
     
     path('search/', ItemSearchView.as_view(), name='itemsearch'),
      path('searchcatgy/', CatgySearchView.as_view(), name='itemsearch'),
 
-    # path('orders/', OrderListCreate.as_view(), name='order-list-create'),
-
-    # path('orders/',  OrderListCreate.as_view(), name='order-list-create'),
-    # path('orders/<int:pk>/', OrderRetrieveUpdateDestroy.as_view(), name='order-retrieve-update-destroy'),
-
-
-    # path('order/<int:id>/', orders_detial),
-    # path('orderInc/', IncreaseShopCartItemQuantityView.as_view()),
-    # path('orderDec/', DecreseItemQuantityView.as_view()),    
+      
 
     path('itemscatgres/<int:id>/', ItemssByCategory),
     

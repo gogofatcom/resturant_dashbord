@@ -264,13 +264,17 @@ export default function Catgreysearch() {
                 type="file"
                 name="image"
                 onChange={handleInputChange}
-
               />
               {/* <Form.Control.Feedback type="invalid">{errors.image || backendErrors.image}</Form.Control.Feedback> */}
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Form.Group controlId="formBasicCheckbox">
+            <Form.Check type="checkbox" name="status_Show" label="show catagry" onChange={handleInputChange} className='m-4 text-dark ' />
+              </Form.Group>
+
+              
+            <button  className="btn btn-danger  rounded p-2"  type="submit">
               Save Changes
-            </Button>
+            </button>
           </Form>
         </Modal.Body>
         <Modal.Footer>

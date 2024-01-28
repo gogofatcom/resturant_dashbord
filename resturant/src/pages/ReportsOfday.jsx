@@ -14,18 +14,24 @@ export default function ReportsOfday() {
         background: '#1F1D2B',
     
       };
+      const storedData = localStorage.getItem('token');
+      console.log(storedData);
+      
 
     const [isCollapsed, setIsCollapsed] = useState({});
     const [orders,setorders]=useState([]);
+    const [user, setUser] = useState(null);
 
 useEffect(()=>{
+  document.body.style.overflow = "scroll";
+  
         axios.get(`${API_URL}/orderx/`).then((response) => {
              setorders(response.data);
            });
-   
+    getUserdata();
          },[])
    
-         console.log(orders);
+        //  console.log(orders);
    
 
  
@@ -35,16 +41,40 @@ useEffect(()=>{
       [orderId]: !prevCollapsedRows[orderId],
     }));
   };
+
+  const second_USER_INFO = `${API_URL}api/v1/auth/users/info/`
+   const getUserdata = async ()=>{
+
+    // const token = localStorage.getItem('token');  // Replace with your actual token
+    const config = {
+      headers: {
+          'Authorization': `Bearer ${storedData}`,
+      }
+  }
+
+  const response = await axios.get(second_USER_INFO, config)
+  if (response.data) {
+      localStorage.setItem("user_data", JSON.stringify(response.data))
+  }
+     console.log(response.data);
+
+
+  
+
+   }
+
+  const bgcol = { background: '#1F1D2B', };
   
  return(
      <>
          <SideBar/>
         <div style={divStyle}  >
                
-            <div className="row  text-light   text-center    rounded ">
+            <div  style={bgcol} className="row  text-light   text-center    rounded ">
                 <h1 className=" text-light  ">  Report Of Day   </h1>
                 <div className=" row col-lg-11 p-4  ">
-               
+              
+
                     <table className="table table-striped table-dark  ms-4 p-4 " >
                         <thead className="  ">
                             <tr>
@@ -127,6 +157,6 @@ useEffect(()=>{
            
 
     </div>
+    
  </>
-    )
-}
+    )}

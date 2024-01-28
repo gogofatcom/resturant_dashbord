@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
+from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -31,27 +31,35 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-     'userprof',
+   
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'catagyres',
     'orderOftable',   
     'ordercart',
+     'userProfile',
    
+    'djoser',
+    "rest_framework_simplejwt",
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
-    'rest_framework.authtoken',       
+    # 'rest_framework.authtoken',       
 ]
 
-# AUTH_USER_MODEL = 'userprof.UserProfile'
 
 MIDDLEWARE = [
+      'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+
 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -62,18 +70,42 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+   'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # ... other authentication classes
     ],
 }
 
-SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('Bearer',),
-}
 
+
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # Add the URL of your React app
+]
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.ModelBackend',
+# ]
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'resturant_dashbord.urls'
+AUTH_USER_MODEL = 'userProfile.CustomUser'
+
+# Allow credentials in the CORS headers if you are using them
+CORS_ALLOW_CREDENTIALS = True
+
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": (
+        "Bearer",
+        "JWT"),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=360),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=60),
+    "SIGNING_KEY": "BWrz80LirzsZTvRSjHKJRljSK2mCOJmg",
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+}
 
 TEMPLATES = [
     {

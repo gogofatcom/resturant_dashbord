@@ -8,6 +8,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 
 
 export default function ItemsListTable() {
+  const [change, setChange] = useState(1);
      const [items,setitems]=useState([]);
      const [catagyres, setCatagres] = useState([]);
      const [showModaldelet, setShowModaldelet] = useState(false);
@@ -30,26 +31,27 @@ export default function ItemsListTable() {
         axios.get(`${API_URL}/catagyres/`).then((response) => {
             setCatagres(response.data);
         });
-        console.log(catagyres)
-
+       setChange(change+1);
+       
     }
 
      const showitems=  async()=>{
       axios.get(`${API_URL}/items/`).then((response) => {
                 setitems(response.data);
             });
-               
+          setChange(change+1)    
      }
      useEffect(()=>{
         showitems();
         showcatagres();
-     },[])
+     },[change])
 
      const deleteitem = (id )=>{
         const response =  fetch(`${API_URL}/items/${id}/`, {
             method: 'DELETE',
           
           });
+          setChange(change+1);  
       }
 
     const getitemByid = async(id)=>{
@@ -74,6 +76,7 @@ export default function ItemsListTable() {
                 status_show:itemtoedit.status_show,
             });
           }
+          setChange(change+1);  
     }
 
     const handleInputChangeItem = (e) => {
@@ -106,12 +109,12 @@ export default function ItemsListTable() {
             console.log("add item ")
               
             setShowitemModel(false);
-             
+            setChange(change+1);  
                   
         
           };
         
- console.log(items);
+ 
   
  return(
      <>

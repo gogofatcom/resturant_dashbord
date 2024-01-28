@@ -14,6 +14,8 @@ from rest_framework.decorators import api_view
 from django.db import transaction
 from orderOftable.models import Tablemodel
 from .serializers import ShopCartSerializer , OrdersSerializer
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 # CART_SESSION_ID = 'cart'
 
@@ -187,6 +189,36 @@ def cancel_items(request):
 
     except OrderCart.DoesNotExist:
         return Response({'error': 'One or more items not found'}, status=status.HTTP_404_NOT_FOUND)
+
+@csrf_exempt
+@require_POST
+def update_quantities(request):
+    try:
+        # Assuming the request body contains a JSON array of objects with 'id' and 'quantity' keys
+        data = json.loads(request.body.decode('utf-8'))
+
+        for item in data:
+            product_id = item.get('item', {}).get('id')
+            quantity = item.get('quantity')
+
+            # Retrieve the product from the database and update the quantity
+            item = Item.objects.get(pk=product_id)
+            item = Item.objects.get(pk=product_id)
+            if item.quanilty > 1 :
+                item.quanilty -= quantity
+                item.save()
+            else :
+              return JsonResponse({'message': 'Quantities item not enoigh'})
+
+               
+        return JsonResponse({'message': 'Quantities updated successfully'})
+    except Exception as e:
+        return JsonResponse({'message': f'Error: {str(e)}'}, status=500)
+
+
+
+
+
 
 
 class OrderDetail(generics.ListCreateAPIView):

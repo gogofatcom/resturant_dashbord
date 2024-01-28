@@ -19,7 +19,7 @@ export default function SettingPage() {
     color: 'blue', // Change this to your desired text color
   };
   const [showAlert, setShowAlert] = useState(false)
-
+  const [change,setChange]=useState(1);
   const [inputValue, setInputValue] = useState('');
   const [catagyres, setCatagres] = useState([]);
   const [visible, setVisible] = useState(false);
@@ -51,9 +51,9 @@ export default function SettingPage() {
     axios.get(`${API_URL}/catagyres/`).then((response) => {
       setCatagres(response.data);
   });
-  console.log(catagyres)
+  
    
-  }, [])
+  }, [change])
 
 
 
@@ -88,9 +88,6 @@ export default function SettingPage() {
 
   const handleAddCategory = (e) => {
     e.preventDefault();
-
-   
-
     const formData = new FormData();
     formData.append('name', category.name);
 
@@ -111,11 +108,10 @@ export default function SettingPage() {
           name: '',
           image: null,
         });
-        setShowModal(false);
+               
+      alert('catagrey add  successfully!'); 
         // Optionally perform any action after adding the category if needed
        
-
-
       })
       .catch((error) => {
         if (error.response && error.response.data && error.response.data.name) {
@@ -128,7 +124,7 @@ export default function SettingPage() {
         }
 
       });
-  
+      setChange(change+1);
     };
  
   const handleInputChangeItem = (e) => {
@@ -174,7 +170,8 @@ export default function SettingPage() {
           alert('Item add  successfully!'); 
 
           })
-       
+          setChange(change+1);
+          
         };
       
 
@@ -222,12 +219,8 @@ export default function SettingPage() {
           {visible && 
           <div style={bgcol} >
             <div className="d-flex flex-row  justify-content-between">
-              <h1 className="text-white m-4  ">  show Categories </h1>
-       
-          
-            <h4 className="text-white m-4  " onClick={() => setVisible(false)}  > X  </h4>
-
-          
+              <h1 className="text-white m-4  ">  show Categories </h1>         
+            <h4 className="text-white m-4  " onClick={() => setVisible(false)}  > X  </h4>         
             </div>
             <CatagresListTable />
 
@@ -245,56 +238,6 @@ export default function SettingPage() {
           }
 
         </div>
-
-        {/* <Modal show={showModal} onHide={() => setShowModal(false)} backdrop="static" style={{ zIndex: "3000" }}  >
-          <Modal.Header closeButton>
-            <Modal.Title>Add Category</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form onSubmit={handleAddCategory}>
-              <Form.Group controlId="categoryName">
-                <Form.Label className=" text-dark  " >Category Name</Form.Label>
-                <Form.Control className=" border rounded border-dark  text-dark"
-                  type="text"
-                  name="name"
-                  value={category.name}
-                  onChange={handleInputChange}
-                  isInvalid={!!errors.name}
-                />
-                <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group controlId="categoryImage">
-                <Form.Label className="  text-dark" >Category Image</Form.Label>
-                <Form.Control variant="secondary" className=" p-2 m-2 bg-secondary rounded  bg-secondary-subtle text-dark "
-                  type="file"
-                  name="image"
-                  onChange={handleInputChange}
-                  isInvalid={!!errors.image}
-                />
-                <Form.Control.Feedback type="invalid">{errors.image}</Form.Control.Feedback>
-                <div>
-                  <label className=" text-dark m-4" >   <input type="checkbox"
-                    onChange={handlechecked} className="m-2" />
-
-                    show Category </label>
-
-                </div>
-              </Form.Group>
-
-              
-              <button className="btn btn-danger  rounded p-2" type="submit" onClick={handleAddCategory}>
-                Add Category
-              </button>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowModal(false)}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal> */}
-
-       
 
         <Modal   show={showModal} onHide={() => setShowModal(false)} backdrop="static" style={{ zIndex: "3000" , backgroundColor:"dark" }}  >
           <Modal.Header >
