@@ -42,13 +42,14 @@ INSTALLED_APPS = [
     'catagyres',
     'orderOftable',   
     'ordercart',
-     'userProfile',
+     'users',
    
     'djoser',
     "rest_framework_simplejwt",
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
+   
     # 'rest_framework.authtoken',       
 ]
 
@@ -58,9 +59,10 @@ MIDDLEWARE = [
         'django.contrib.auth.middleware.AuthenticationMiddleware',
 
     'corsheaders.middleware.CorsMiddleware',
+     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
 
-
+        
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -91,7 +93,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'resturant_dashbord.urls'
-AUTH_USER_MODEL = 'userProfile.CustomUser'
+AUTH_USER_MODEL='users.User'
 
 # Allow credentials in the CORS headers if you are using them
 CORS_ALLOW_CREDENTIALS = True
@@ -100,8 +102,11 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": (
         "Bearer",
         "JWT"),
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=360),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=60),
+     "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": True,
     "SIGNING_KEY": "BWrz80LirzsZTvRSjHKJRljSK2mCOJmg",
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
@@ -133,7 +138,7 @@ DATABASES = {
      'default': {
    'ENGINE': 'django.db.backends.postgresql',
         'HOST': 'localhost',
-        'NAME': 'resturantadmindashbord',
+        'NAME': 'restdb',
         'USER': 'postgres',
         'PASSWORD': '12344321',
         'PORT': 5432    }
@@ -146,16 +151,19 @@ DATABASES = {
     
 }
 import os
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
-STATIC_ROOT=os.path.join(BASE_DIR,"static_cdn","static_root")
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'mediafiles')
 
 # URL used to access the media
 MEDIA_URL = '/media/'
 
-
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

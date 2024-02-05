@@ -34,7 +34,7 @@ const RegistionPage = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${API_URL}/register/`, formData ,
+      const response = await axios.post(`${API_URL}/api/v1/auth/users/`, formData ,
      {
       headers : {
         "Content-type": "application/json"
@@ -71,7 +71,7 @@ const RegistionPage = () => {
 
         <div className="row   align-items-center  justify-content-center ">
           <div className="col-md-6 text-center mt-4 mb-5">
-            <h2 className="heading-section mt-4"> Registion   </h2>
+            <h2 className="heading-section mt-4">  تسجيل حساب جديد  </h2>
           </div>
 
           <div className="row justify-content-center">
@@ -83,20 +83,21 @@ const RegistionPage = () => {
                     <div className="form-group me-4">
                       <input type="text" className="form-control"
 
-                        name="first_name"
-                        value={formData.first_name}
+                        name="last_name"
+                        value={formData.last_name}
+                        
                         onChange={handleInputChange}
 
-                        placeholder="First Name" required />
+                        placeholder="الاسم الثانى" required />
                     </div>
                     <div className="form-group me-4">
                       <input type="text" className="form-control"
 
-                        name="last_name"
-                        value={formData.last_name}
+                        name="first_name"
+                      value={formData.first_name}
                         onChange={handleInputChange}
 
-                        placeholder="last Name" required />
+                        placeholder="الاسم الاول" required />
                     </div>
                    
                   </div>
@@ -107,7 +108,7 @@ const RegistionPage = () => {
                       value={formData.email}
                       onChange={handleInputChange}
 
-                      placeholder="Email" required />
+                      placeholder="الايميل " required />
                   </div>
                   <div className="form-group">
                     <input id="password-field" type="password" class="form-control"
@@ -115,7 +116,7 @@ const RegistionPage = () => {
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
-                      placeholder="Password" required />
+                      placeholder="الرقم السرى" required />
 
                     <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                   </div>
@@ -127,7 +128,7 @@ const RegistionPage = () => {
 
                       <label className="checkbox-primary ">
                         <input type="checkbox" className="m-2" />
-                        Remember Me
+                       تذكير
 
                         <span className="checkmark"></span>
                       </label>
@@ -135,7 +136,7 @@ const RegistionPage = () => {
 
                     </div>
                     <div className="w-50 text-md-right m-1">
-                      <a href="#" >Forgot Password</a>
+                      <a href="#" >هل نست الرقم السرى </a>
                     </div>
                   </div>
                 </form>

@@ -3,6 +3,7 @@ import "../pages/Orderspag/orderlist.css"
 import axios from "axios";
 import { API_URL } from "../BaseUrl";
 import { Button, Form, Modal } from "react-bootstrap";
+import Popofitenquanilty  from "./Popofitenquanilty";
 
 
 
@@ -41,10 +42,11 @@ export default function ItemsListTable() {
             });
           setChange(change+1)    
      }
+     
      useEffect(()=>{
         showitems();
         showcatagres();
-     },[change])
+     },[])
 
      const deleteitem = (id )=>{
         const response =  fetch(`${API_URL}/items/${id}/`, {
@@ -153,6 +155,13 @@ export default function ItemsListTable() {
 
                                     <td>
 
+                                      {
+
+                                    item.quanilty < 5 ? ( 
+                                      <Popofitenquanilty item={item.name}/>
+                                    ):( <p></p> )
+                                      }
+
                                     { item.status_show ? (
                             <label className="m-4">
                               <input type="checkbox" className="m-2" checked />
@@ -185,8 +194,15 @@ export default function ItemsListTable() {
                                     showitems();
                                  }}
                                  > delete   </button> 
+                                 
+        
+                                 
                           </tbody>
                             ))
+                          
+                            
+                           
+
                         }
                        
                      

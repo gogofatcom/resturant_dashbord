@@ -48,6 +48,8 @@ function TopSect() {
         </div>
        </div> 
          <div>
+
+          
           <div className="  d-flex   ">
                 <div className=" w-100 mt-2">
                    <input type="text"  name="input" value={searchitem.input} onChange={handleInputChange} className="form-control mt-1 " />
@@ -82,7 +84,7 @@ function TopSect() {
                        
                          
                     }}
-                    > Search </button>
+                    > بحث </button>
                 </div>
                     
                 

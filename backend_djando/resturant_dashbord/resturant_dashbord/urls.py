@@ -19,7 +19,7 @@ from django.urls import path ,include
 from catagyres.views import *
 from orderOftable.views import *
 from ordercart.views import*
-from userProfile.views import *
+from users.views import *
 from django.conf import  settings
 from django.conf.urls.static import static
 # from rest_framework_simplejwt import views as jwt_views
@@ -34,16 +34,24 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-     
-    
-   path("api/v1/auth/", include('djoser.urls')),
+    path("api/v1/auth/", include('djoser.urls')),
     path("api/v1/auth/", include('djoser.urls.jwt')),
+    path('api/check-auth/', check_authentication, name='check_authentication'),
 
-    path('register/', RegistrationAPIView.as_view(), name='register'),
-    path('login/', LoginAPIView.as_view(), name='login'),
-    path('user/', UserProfileView.as_view(), name='user'),
     
-    
+    #users
+    path('api/v1/auth/users/info', get_user_info, name='get_user_info'),
+    #user profile
+    path('api/user_data/<int:id>/', user_retrieve, name='user-retrieve'),
+    # Define the URL for updating user data
+    path('api/user_update/<int:id>/', user_update, name='user-update'),    
+    #users list
+    path('api/users/', UserList.as_view(), name='user-list'),
+    #update and delete user by admin  
+    path('api/users/<int:pk>/', UserDetail.as_view(), name='user-detail'),    
+    #create user by admin
+     path('api/users/create/', CreateUserView.as_view(), name='create-user'),
+
 
    
 
@@ -59,9 +67,12 @@ urlpatterns = [
      path('tables/', TablesList),
      path('tables/<int:id>/', Tables_detial), 
      path('tablestats/', update_tablestuts), 
+      path('tableid/<int:id>/', tableById), 
 
+      
    #order
-  
+   path('reportuser/', OrderDetailbyuser.as_view(), name='report_byuser'),
+   
     path('orderx/', OrderDetail.as_view(), name='order-detail'),
     # path('orders/', OrderListCreate.as_view(), name='order-list-create'),
     

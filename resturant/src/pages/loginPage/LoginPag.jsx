@@ -9,9 +9,9 @@ import { API_URL } from "../../BaseUrl";
 const LoginPag = () =>{
   const navigate = useNavigate();
 
-    const navigateHome = () => {
+    const navigateHome = (usename) => {
 		// 👇️ navigate to /
-		navigate('/home');
+		navigate('/home',{ state: { yourData: usename } });
 	  };
 
   const [formData, setFormData] = useState({
@@ -25,21 +25,23 @@ const [user, setUser] = useState(null);
 const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
 };
-
+const [userData, setUserData] = useState([]);
 
 const handleLogin = async (e) => {
   e.preventDefault();
 
     try {
-        const response = await axios.post(`${API_URL}/login/`, formData);
+        const response = await axios.post(`${API_URL}/api/v1/auth/jwt/create/`, formData);
         // Cookies.set('access_token', response.data.access_token, { expires: 7 }); 
       console.log(response.data); // handle successful login
-         localStorage.setItem('token', response.data.access_token);
+         localStorage.setItem('token', response.data.access);
         
         console.log(localStorage.getItem('token'));
+ fetchUserProfile();
+
 
       
-    navigateHome();
+    navigateHome(userData.first_name);
        
     } catch (error) {
         console.error('Login failed:', error.response.data);
@@ -48,7 +50,26 @@ const handleLogin = async (e) => {
     }
 
 };
- 
+
+
+  
+const fetchUserProfile = async () => {
+  try {
+    const storedData = localStorage.getItem('token');
+    console.log(storedData);
+    // const token = Cookies.get('access_token');
+    const response = await axios.get(`${API_URL}/api/v1/auth/users/info`, {
+      headers: {
+        'Authorization': `Bearer ${storedData}`,
+      },
+    });
+    console.log('User profile:', response.data);
+    setUserData(response.data);
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+  }
+};
+
 
 
     
@@ -70,7 +91,7 @@ const handleLogin = async (e) => {
   
                    <div  className="row   align-items-center  justify-content-center ">
 				    <div className="col-md-6 text-center mt-4 mb-5">
-					<h2 className="heading-section mt-4">Loge in </h2>
+					<h2 className="heading-section mt-4">تسجيل الدخول </h2>
 			    	</div>
 
                     <div className="row justify-content-center">
@@ -85,7 +106,7 @@ const handleLogin = async (e) => {
                                         value={formData.email}
                                         onChange={handleInputChange}
                 
-                  placeholder="email" required />
+                  placeholder="الايميل" required />
 		      		</div>
 	            <div className="form-group">
 	              <input id="password-field" type="password" class="form-control" 
@@ -93,7 +114,7 @@ const handleLogin = async (e) => {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}  
-                  placeholder="Password" required />
+                  placeholder="الرقم السرى " required />
 	              <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
 	            </div>
 	            <div className="form-group">

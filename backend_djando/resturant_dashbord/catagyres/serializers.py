@@ -19,4 +19,5 @@ class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model=Item
         fields='__all__'
+        
         # fields=['id','name','purshingPrice','sellingPrice','quanilty','packingType','packingType','catagyName','status_show']

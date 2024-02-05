@@ -8,7 +8,7 @@ class OrderCart(models.Model):
    
    t_number=models.ForeignKey(Tablemodel, on_delete=models.CASCADE, related_name='cart_tableno',blank=True)
    orderstate=models.BooleanField(default=False)
-   item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='shopcart_books')
+   item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='shopcart_items')
    quantity = models.PositiveSmallIntegerField(default=0)
 
    @property

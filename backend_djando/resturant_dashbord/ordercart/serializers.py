@@ -24,7 +24,7 @@ class ShopCartSerializer(serializers.ModelSerializer):
             'id': instance.item.id,
             'name': instance.item.name,  # Replace with the actual field name in your Book model
             'sellingPrice': instance.item.sellingPrice,  # Replace with the actual field name in your Book model
-            
+            'quanilty': instance.item.quanilty,
         }
         return representation
     

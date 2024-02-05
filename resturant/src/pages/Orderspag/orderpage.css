@@ -30,10 +30,18 @@
   
   /* Control the right side */
   .right {
-    overflow-y: scroll;
+  
+  overflow-x: scroll;
+ 
     height: 72vh;
    background: #1F1D2B;
   
     box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  
+
+  .modal-title-centered {
+    text-align: center;
+    margin: 0 auto;
   }
   

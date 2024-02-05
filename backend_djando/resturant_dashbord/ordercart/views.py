@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
+from django.utils import timezone
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -68,7 +69,7 @@ class AddToShopCartView(APIView):
             return Response({'error': 'Table not found'}, status=status.HTTP_404_NOT_FOUND)
 
         # Fetch or create a shopping cart for a specific item and table
-        shop_cart, created = OrderCart.objects.get_or_create(item=book, t_number=table)
+        shop_cart, created = OrderCart.objects.get_or_create(item=book, t_number=table,orderstate=orderstate)
 
         # Check if the requested quantity exceeds the available stock
         if quantity > book.quanilty:
@@ -202,16 +203,17 @@ def update_quantities(request):
             quantity = item.get('quantity')
 
             # Retrieve the product from the database and update the quantity
-            item = Item.objects.get(pk=product_id)
-            item = Item.objects.get(pk=product_id)
+            item = Item.objects.get(pk=product_id)          
             if item.quanilty > 1 :
                 item.quanilty -= quantity
                 item.save()
+                return JsonResponse({'message': 'Quantities updated successfully'})
+
             else :
               return JsonResponse({'message': 'Quantities item not enoigh'})
 
                
-        return JsonResponse({'message': 'Quantities updated successfully'})
+        
     except Exception as e:
         return JsonResponse({'message': f'Error: {str(e)}'}, status=500)
 
@@ -221,7 +223,41 @@ def update_quantities(request):
 
 
 
-class OrderDetail(generics.ListCreateAPIView):
-    queryset = EndOrder.objects.all()
+# class OrderDetail2(generics.ListCreateAPIView):
+#     queryset = EndOrder.objects.all()
+#     serializer_class = OrdersSerializer
+    
+
+ 
+class OrderDetailbyuser(generics.ListCreateAPIView):
     serializer_class = OrdersSerializer
 
+    def get_queryset(self):
+        # Filter orders based on the requesting user and created in the last 24 hours
+        user = self.request.query_params.get('user')
+        twenty_four_hours_ago = timezone.now() - timezone.timedelta(hours=24)
+        return EndOrder.objects.filter(adduser=user, created_at__gte=twenty_four_hours_ago)
+
+
+
+
+class OrderDetail(generics.ListCreateAPIView):
+    serializer_class = OrdersSerializer
+
+    def get_queryset(self):
+        time_range = self.request.query_params.get('time_range', 'last_24_hours')
+
+        now = timezone.now()
+        if time_range == 'last_24_hours':
+            start_datetime = now - timezone.timedelta(hours=24)
+        elif time_range == 'last_7_days':
+            start_datetime = now - timezone.timedelta(days=7)
+        elif time_range == 'last_30_days':
+            start_datetime =  now - timezone.timedelta(days=30)
+        elif time_range == 'last_year':
+            start_datetime = now - timezone.timedelta(days=365)
+        else:
+            start_datetime = now - timezone.timedelta(hours=24)
+
+        queryset = EndOrder.objects.filter(created_at__gte=start_datetime)
+        return queryset
